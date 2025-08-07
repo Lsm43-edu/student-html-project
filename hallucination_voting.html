@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hallucination Detection Exercise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .prompt-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .prompt-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .prompt-text {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .responses-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .response-card {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .response-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .response-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .vote-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .vote-btn:hover {
+            background: linear-gradient(45deg, #2980b9, #1f5f99);
+            transform: scale(1.05);
+        }
+
+        .vote-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-text {
+            line-height: 1.8;
+            color: #444;
+            font-size: 1rem;
+        }
+
+        .results-section {
+            background: #f1f2f6;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .results-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .vote-bars {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .vote-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .vote-count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .vote-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            transition: width 0.8s ease;
+            border-radius: 4px;
+        }
+
+        .reveal-section {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .reveal-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .reveal-title {
+            font-size: 1.4rem;
+            color: #856404;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .control-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-btn:hover {
+            background: linear-gradient(45deg, #c0392b, #a93226);
+            transform: scale(1.05);
+        }
+
+        .control-btn.secondary {
+            background: linear-gradient(45deg, #27ae60, #229954);
+        }
+
+        .control-btn.secondary:hover {
+            background: linear-gradient(45deg, #229954, #1e8449);
+        }
+
+        @media (max-width: 768px) {
+            .responses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .vote-bars {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .hallucination-tag {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .accurate-tag {
+            background: #27ae60;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Hallucination Detection</h1>
+            <p>Can you spot which response contains false information?</p>
+        </div>
+
+        <div class="content">
+            <div class="prompt-section">
+                <h2>The Prompt</h2>
+                <div class="prompt-text">"Tell me about the Great Storm of 1703 and its impact on London's architecture."</div>
+            </div>
+
+            <div class="responses-grid">
+                <div class="response-card">
+                    <div class="response-header">
+                        <div class="response-title">Response A</div>
+                        <button class="vote-btn" onclick="vote('A')" id="voteA">Vote for A</button>
+                    </div>
+                    <div class="response-text">
+                        The Great Storm of 1703 was indeed devastating, killing over 8,000 people across Britain. In London, it destroyed the original medieval London Bridge, forcing the construction of the stone bridge we know today. The storm also toppled the spire of Old St. Paul's Cathedral, which had survived the Great Fire of 1666 but couldn't withstand the hurricane-force winds. This led Christopher Wren to redesign the cathedral with the famous dome we see today. The Royal Observatory at Greenwich was also severely damaged, delaying astronomical observations for nearly two years. Many timber-framed Tudor buildings in the City were destroyed, accelerating London's transition to brick construction.
+                    </div>
+                </div>
+
+                <div class="response-card">
+                    <div class="response-header">
+                        <div class="response-title">Response B</div>
+                        <button class="vote-btn" onclick="vote('B')" id="voteB">Vote for B</button>
+                    </div>
+                    <div class="response-text">
+                        The Great Storm of 1703 was indeed a devastating weather event that killed thousands across Britain. However, common claims about its architectural impact on London are often exaggerated or incorrect. St. Paul's Cathedral was already rebuilt by Wren after the Great Fire of 1666, with its dome completed before 1703. The medieval London Bridge had already been replaced much earlier. While the storm did cause extensive damage to many buildings across London, the specific major architectural transformations often attributed to it don't align with historical records.
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section" id="results">
+                <div class="results-header">
+                    <div class="results-title">Voting Results</div>
+                    <p>Total votes: <span id="totalVotes">0</span></p>
+                </div>
+                
+                <div class="vote-bars">
+                    <div class="vote-bar">
+                        <div class="vote-count" id="votesA">0</div>
+                        <div class="vote-label">Response A</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressA" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="vote-bar">
+                        <div class="vote-count" id="votesB">0</div>
+                        <div class="vote-label">Response B</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressB" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal-section" id="reveal">
+                <div class="reveal-title">The Answer</div>
+                <p><strong>Response A contains hallucinations!</strong> <span class="hallucination-tag">Hallucinated</span></p>
+                <p><strong>Response B is accurate.</strong> <span class="accurate-tag">Accurate</span></p>
+                <br>
+                <p><strong>What made Response A convincing but wrong:</strong></p>
+                <ul style="margin: 15px 0; padding-left: 20px; line-height: 1.8;">
+                    <li>Mixed true facts (the storm did happen, death toll is accurate) with plausible but false claims</li>
+                    <li>Used specific details and dates that sound authoritative</li>
+                    <li>Connected real historical landmarks (St. Paul's, London Bridge) with false causation</li>
+                    <li>St. Paul's dome was already completed by 1708, years after Wren's post-1666 rebuild</li>
+                    <li>Medieval London Bridge was replaced much earlier than 1703</li>
+                </ul>
+                <p>This demonstrates how AI hallucinations often weave false information into true contexts, making them particularly convincing and dangerous.</p>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" onclick="showResults()" id="showResultsBtn">Show Results</button>
+                <button class="control-btn secondary" onclick="revealAnswer()" id="revealBtn" style="display: none;">Reveal Answer</button>
+                <button class="control-btn" onclick="resetVoting()" id="resetBtn" style="display: none;">Reset for Next Exercise</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let votes = { A: 0, B: 0 };
+        let hasVoted = false;
+        let resultsShown = false;
+        let answerRevealed = false;
+
+        function vote(choice) {
+            if (hasVoted) return;
+            
+            votes[choice]++;
+            hasVoted = true;
+            
+            // Disable voting buttons
+            document.getElementById('voteA').disabled = true;
+            document.getElementById('voteB').disabled = true;
+            
+            // Change button text to show what was voted for
+            if (choice === 'A') {
+                document.getElementById('voteA').textContent = '✓ Your Vote';
+                document.getElementById('voteA').style.background = '#27ae60';
+            } else {
+                document.getElementById('voteB').textContent = '✓ Your Vote';
+                document.getElementById('voteB').style.background = '#27ae60';
+            }
+        }
+
+        function showResults() {
+            if (resultsShown) return;
+            
+            resultsShown = true;
+            document.getElementById('results').classList.add('show');
+            document.getElementById('showResultsBtn').style.display = 'none';
+            document.getElementById('revealBtn').style.display = 'inline-block';
+            
+            updateResultsDisplay();
+        }
+
+        function updateResultsDisplay() {
+            const totalVotes = votes.A + votes.B;
+            const percentA = totalVotes > 0 ? Math.round((votes.A / totalVotes) * 100) : 0;
+            const percentB = totalVotes > 0 ? Math.round((votes.B / totalVotes) * 100) : 0;
+            
+            document.getElementById('totalVotes').textContent = totalVotes;
+            document.getElementById('votesA').textContent = votes.A;
+            document.getElementById('votesB').textContent = votes.B;
+            
+            document.getElementById('progressA').style.width = percentA + '%';
+            document.getElementById('progressB').style.width = percentB + '%';
+        }
+
+        function revealAnswer() {
+            if (answerRevealed) return;
+            
+            answerRevealed = true;
+            document.getElementById('reveal').classList.add('show');
+            document.getElementById('revealBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'inline-block';
+        }
+
+        function resetVoting() {
+            // Reset all variables
+            votes = { A: 0, B: 0 };
+            hasVoted = false;
+            resultsShown = false;
+            answerRevealed = false;
+            
+            // Reset buttons
+            document.getElementById('voteA').disabled = false;
+            document.getElementById('voteB').disabled = false;
+            document.getElementById('voteA').textContent = 'Vote for A';
+            document.getElementById('voteB').textContent = 'Vote for B';
+            document.getElementById('voteA').style.background = '';
+            document.getElementById('voteB').style.background = '';
+            
+            // Hide sections
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('reveal').classList.remove('show');
+            
+            // Reset control buttons
+            document.getElementById('showResultsBtn').style.display = 'inline-block';
+            document.getElementById('revealBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
