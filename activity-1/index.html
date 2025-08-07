@@ -7,7 +7,7 @@
     <!-- Tailwind CSS CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome CDN for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -20,10 +20,10 @@
     <div id="app" class="min-h-screen"></div>
 
     <script>
-        // All the logic and data from your React component
+        // Data and logic
         const scenario = {
             title: "EduTech University's AI Integration Dilemma",
-            background: "You're part of EduTech University's student advisory committee. The administration wants to implement 'StudyBot AI' - an advanced AI system that will help with essay feedback, tutoring, research assistance, and academic planning. As student representatives, you need to evaluate this proposal and make recommendations.",
+            background: "You're part of EduTech University's student advisory committee. The administration wants to implement 'StudyBot AI' - an advanced AI system that will help with essay feedback, tutoring, personalized study plans, research paper assistance, and plagiarism detection. The system will analyze student data to tailor learning.",
             character: "Student Advisory Committee Member"
         };
 
@@ -31,7 +31,7 @@
             {
                 id: 0,
                 title: "The Proposal",
-                content: "StudyBot AI would offer: automated essay grading with detailed feedback, 24/7 tutoring support, personalized study plans, research paper assistance, and plagiarism detection. The system would access student academic records to provide tailored recommendations.",
+                content: "StudyBot AI would offer: automated essay grading with detailed feedback, 24/7 tutoring support, personalized study plans, research paper assistance, and plagiarism detection. The system will analyze student data to tailor learning.",
                 question: "What's your initial reaction to this proposal?",
                 choices: [
                     { id: 'enthusiastic', text: 'Enthusiastic - This could revolutionize learning!', type: 'positive' },
@@ -43,7 +43,7 @@
             {
                 id: 1,
                 title: "Student Privacy Concerns",
-                content: "A data privacy expert raises concerns: StudyBot would track study habits, analyze writing patterns, monitor research topics, and store all academic interactions. This data could be valuable for improving education but also raises privacy questions.",
+                content: "A data privacy expert raises concerns: StudyBot would track study habits, analyze writing patterns, monitor research topics, and store all academic interactions. This data could be valuable for learning but raises privacy and security issues.",
                 question: "How do you weigh privacy against personalized learning benefits?",
                 choices: [
                     { id: 'privacy_first', text: 'Privacy is paramount - minimal data collection only', type: 'negative' },
@@ -55,7 +55,7 @@
             {
                 id: 2,
                 title: "Academic Integrity Challenges",
-                content: "Faculty worry that students might become over-reliant on AI assistance, potentially undermining critical thinking skills. There are also concerns about distinguishing between AI-assisted work and student's original thinking.",
+                content: "Faculty worry that students might become over-reliant on AI assistance, potentially undermining critical thinking skills. There are also concerns about distinguishing between AI-assisted and original student work.",
                 question: "How should the university address academic integrity with AI tools?",
                 choices: [
                     { id: 'strict_limits', text: 'Strict limits - AI only for basic research and grammar checking', type: 'negative' },
@@ -67,7 +67,7 @@
             {
                 id: 3,
                 title: "Equity and Access Issues",
-                content: "While StudyBot could help level the playing field by providing premium tutoring to all students, concerns arise about students who struggle with technology or prefer human interaction. Some worry AI might inadvertently reinforce educational biases.",
+                content: "While StudyBot could help level the playing field by providing premium tutoring to all students, concerns arise about students who struggle with technology or prefer human interaction.",
                 question: "How can the university ensure AI enhances rather than hinders educational equity?",
                 choices: [
                     { id: 'human_alternative', text: 'Always provide human alternatives to AI services', type: 'balanced' },
@@ -78,6 +78,7 @@
             }
         ];
 
+        // Font Awesome icon class mapping
         const allBenefits = {
             personalized: { icon: 'fa-solid fa-brain', title: "Personalized Learning", description: "AI adapts to individual learning styles and pace" },
             availability: { icon: 'fa-solid fa-book-open', title: "24/7 Availability", description: "Learning support available anytime, anywhere" },
@@ -97,23 +98,12 @@
             academic_integrity: { icon: 'fa-solid fa-shield-halved', title: "Academic Dishonesty", description: "Difficulty distinguishing student work from AI assistance" },
             skill_erosion: { icon: 'fa-solid fa-brain', title: "Skill Erosion", description: "Basic academic skills may deteriorate from AI reliance" }
         };
-        
-        const fa_icons = {
-            'ChevronRight': `<i class="fa-solid fa-chevron-right"></i>`,
-            'ChevronDown': `<i class="fa-solid fa-chevron-down"></i>`,
-            'AlertTriangle': `<i class="fa-solid fa-triangle-exclamation"></i>`,
-            'CheckCircle': `<i class="fa-solid fa-circle-check"></i>`,
-            'Brain': `<i class="fa-solid fa-brain"></i>`,
-            'Users': `<i class="fa-solid fa-users"></i>`,
-            'BookOpen': `<i class="fa-solid fa-book-open"></i>`,
-            'Shield': `<i class="fa-solid fa-shield-halved"></i>`
-        };
 
         let currentStep = 0;
         let selectedChoices = {};
         let expandedSections = {};
         let showAnalysis = false;
-        
+
         const app = document.getElementById('app');
 
         function getPersonalizedBenefitsAndRisks() {
@@ -121,7 +111,6 @@
             let benefits = [];
             let risks = [];
 
-            // Determine benefits and risks based on choices
             if (choices[0] === 'enthusiastic' || choices[0] === 'mixed') {
                 benefits.push(allBenefits.personalized, allBenefits.availability, allBenefits.feedback);
             }
@@ -129,8 +118,6 @@
                 benefits.push(allBenefits.scalable);
                 risks.push(allRisks.dependence);
             }
-
-            // Privacy choices affect what appears
             if (choices[1] === 'privacy_first') {
                 risks.push(allRisks.privacy, allRisks.inequality);
             } else if (choices[1] === 'benefits_outweigh') {
@@ -143,8 +130,6 @@
                 benefits.push(allBenefits.personalized);
                 risks.push(allRisks.privacy);
             }
-
-            // Academic integrity choices
             if (choices[2] === 'strict_limits') {
                 risks.push(allRisks.academic_integrity, allRisks.inequality);
             } else if (choices[2] === 'embrace_collaboration') {
@@ -154,8 +139,6 @@
                 benefits.push(allBenefits.collaboration);
                 risks.push(allRisks.academic_integrity);
             }
-
-            // Equity choices
             if (choices[3] === 'human_alternative') {
                 benefits.push(allBenefits.equity);
                 risks.push(allRisks.inequality);
@@ -165,20 +148,14 @@
                 benefits.push(allBenefits.equity);
                 risks.push(allRisks.inequality);
             }
-
-            // Add some general risks if few were selected
             if (risks.length < 2) {
                 if (!risks.find(r => r.title.includes('Privacy'))) risks.push(allRisks.privacy);
                 if (!risks.find(r => r.title.includes('dependence'))) risks.push(allRisks.dependence);
             }
-
-            // Add some general benefits if few were selected
             if (benefits.length < 2) {
                 if (!benefits.find(b => b.title.includes('Availability'))) benefits.push(allBenefits.availability);
                 if (!benefits.find(b => b.title.includes('Feedback'))) benefits.push(allBenefits.feedback);
             }
-
-            // Remove duplicates
             benefits = benefits.filter((benefit, index, self) =>
                 index === self.findIndex(b => b.title === benefit.title)
             );
@@ -248,7 +225,7 @@
             const currentStepData = steps[currentStep];
             const isComplete = Object.keys(selectedChoices).length === steps.length;
             const content = showAnalysis ? renderAnalysis() : renderStep(currentStepData, isComplete);
-            
+
             app.innerHTML = `
                 <div class="max-w-4xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
                     <div class="bg-white rounded-xl shadow-lg p-8">
@@ -259,7 +236,7 @@
                                 Role: ${scenario.character}
                             </div>
                         </div>
-                        
+
                         <!-- Progress Bar -->
                         <div class="mb-8">
                             <div class="flex justify-between items-center mb-2">
@@ -314,9 +291,9 @@
                     <div class="bg-gray-50 p-6 rounded-lg mb-6">
                         <p class="text-gray-700 leading-relaxed">${stepData.content}</p>
                     </div>
-                    
+
                     <h3 class="text-lg font-medium text-gray-800 mb-4">${stepData.question}</h3>
-                    
+
                     <div class="space-y-3">
                         ${stepData.choices.map(choice => `
                             <button
@@ -361,7 +338,7 @@
             return `
                 <div class="space-y-8">
                     <h2 class="text-2xl font-semibold text-gray-800 text-center">Your Analysis & Recommendations</h2>
-                    
+
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl">
                         <h3 class="text-xl font-semibold text-gray-800 mb-3">${recommendation.title}</h3>
                         <p class="text-gray-700 mb-4">${recommendation.description}</p>
