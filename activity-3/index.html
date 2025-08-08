@@ -1,51 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprehensive AI Tools Guide</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Tools for Students</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #f0f0f0, #e0e0e0);
-            margin: 0;
-            padding: 20px;
-        }
-        .tool-card {
-            background: white;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        .tool-card:hover {
-            transform: scale(1.02);
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height:1.6; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; padding:20px; }
+        .container { max-width:1200px; margin:0 auto; background:rgba(255,255,255,0.95); border-radius:20px; backdrop-filter:blur(10px); box-shadow:0 20px 40px rgba(0,0,0,0.1); overflow:hidden; }
+        .header { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; text-align:center; padding:40px 20px; }
+        .header h1 { font-size:2.5rem; margin-bottom:10px; font-weight:700; }
+        .header p { font-size:1.1rem; opacity:0.9; }
+        .filter-section { padding:30px; background:#f8fafc; border-bottom:1px solid #e2e8f0; }
+        .filter-buttons { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+        .filter-btn { padding:10px 20px; border:none; border-radius:25px; background:#e2e8f0; color:#475569; cursor:pointer; transition:.3s; font-weight:500; }
+        .filter-btn:hover, .filter-btn.active { background:#4f46e5; color:#fff; transform:translateY(-2px); box-shadow:0 5px 15px rgba(79,70,229,0.3); }
+        .tools-grid { padding:30px; display:grid; grid-template-columns:repeat(auto-fit,minmax(380px,1fr)); gap:25px; }
+        .tool-card { background:#fff; border-radius:15px; padding:25px; box-shadow:0 10px 30px rgba(0,0,0,0.1); transition:.3s; border-left:5px solid #4f46e5; display:flex; flex-direction:column; }
+        .tool-card:hover { transform:translateY(-5px); box-shadow:0 20px 40px rgba(0,0,0,0.15); }
+        .tool-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:15px; gap:10px; }
+        .tool-name { font-size:1.35rem; font-weight:700; color:#1e293b; margin-bottom:6px; }
+        .tool-category { background:#e0e7ff; color:#4338ca; padding:4px 12px; border-radius:12px; font-size:.75rem; font-weight:600; white-space:nowrap; }
+        .tool-description { color:#475569; margin-bottom:18px; font-size:.94rem; }
+        .tool-section { margin-bottom:14px; }
+        .section-title { font-weight:600; color:#374151; margin-bottom:6px; font-size:.78rem; text-transform:uppercase; letter-spacing:.5px; }
+        .tool-section ul { list-style:none; }
+        .tool-section li { padding:3px 0 3px 15px; font-size:.86rem; position:relative; line-height:1.3; }
+        .tool-section li:before { content:"•"; position:absolute; left:0; font-weight:bold; }
+        .strengths .section-title { color:#047857; }
+        .weaknesses .section-title { color:#b91c1c; }
+        .strengths li:before { color:#059669; }
+        .weaknesses li:before { color:#dc2626; }
+        .pricing .section-title { color:#92400e; }
+        .pricing-badges { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+        .pricing-badge { background:#fef3c7; color:#92400e; padding:4px 10px; border-radius:8px; font-size:.65rem; font-weight:600; letter-spacing:.5px; }
+        .badge-free { background:#d1fae5; color:#065f46; }
+        .badge-freemium { background:#e0f2fe; color:#075985; }
+        .badge-paid { background:#fee2e2; color:#991b1b; }
+        .badge-student { background:#dbeafe; color:#1e40af; }
+        .badge-new { background:#ede9fe; color:#5b21b6; }
+        .tool-link { margin-top:auto; display:inline-block; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; text-decoration:none; padding:10px 20px; border-radius:25px; font-weight:500; font-size:.85rem; transition:.3s; align-self:flex-start; }
+        .tool-link:hover { transform:translateY(-2px); box-shadow:0 10px 25px rgba(79,70,229,0.3); text-decoration:none; }
+        .search-wrap { margin:15px auto 0; max-width:500px; display:flex; gap:10px; }
+        .search-wrap input { flex:1; padding:10px 14px; border:1px solid #cbd5e1; border-radius:12px; font-size:.9rem; outline:none; transition:.2s; }
+        .search-wrap input:focus { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,0.25); }
+        .empty-state { grid-column:1 / -1; text-align:center; padding:40px 20px; background:#f1f5f9; border:2px dashed #cbd5e1; border-radius:16px; color:#475569; font-size:.95rem; }
+        @media (max-width:768px){ .tools-grid { grid-template-columns:1fr; padding:24px; } .header h1 { font-size:2rem; } .tool-card { padding:20px; } }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Tools for Students</h1>
+            <p>Discover powerful AI tools to enhance your learning, research, creativity, and productivity</p>
+            <div class="search-wrap">
+                <input type="text" id="searchBox" placeholder="Search tools (name, feature, category)..." oninput="applyFilters()" />
+            </div>
+        </div>
+        <div class="filter-section">
+            <div class="filter-buttons" id="filterButtons">
+                <button class="filter-btn active" data-filter="all" onclick="setCategoryFilter('all', this)">All Tools</button>
+                <button class="filter-btn" data-filter="writing" onclick="setCategoryFilter('writing', this)">Writing & Research</button>
+                <button class="filter-btn" data-filter="study" onclick="setCategoryFilter('study', this)">Study & Learning</button>
+                <button class="filter-btn" data-filter="coding" onclick="setCategoryFilter('coding', this)">Coding & Math</button>
+                <button class="filter-btn" data-filter="productivity" onclick="setCategoryFilter('productivity', this)">Productivity</button>
+                <button class="filter-btn" data-filter="creative" onclick="setCategoryFilter('creative', this)">Creative</button>
+            </div>
+        </div>
+        <div class="tools-grid" id="toolsGrid"></div>
+    </div>
 
-<h1>Comprehensive AI Tools Guide</h1>
-<p>Explore a variety of AI tools that assist in different tasks.</p>
+<script>
+const tools = [
+  { name:"ChatGPT", category:"writing", categoryDisplay:"Writing & Research", description:"OpenAI's conversational AI assistant for brainstorming, drafting, and explanation.", strengths:["Excellent for brainstorming and ideation","Helps outline essays and structure arguments","Explains complex concepts simply","Versatile across academic subjects","Continuous improvement & large model variants"], weaknesses:["May produce inaccurate (hallucinated) facts","Knowledge cutoff; not inherently real-time","Needs explicit prompts for best results","Potential bias in generated content","Requires diligent fact-checking"], pricingType:"freemium", pricing:"Free tier; ChatGPT Plus $20/mo; enterprise & student offerings via partnerships", link:"https://chat.openai.com" },
+  { name:"Grammarly", category:"writing", categoryDisplay:"Writing & Research", description:"AI-powered writing assistant for grammar, clarity, tone, and style.", strengths:["Industry-leading grammar & style checks","Tone detection and rewriting","Plagiarism detection (premium)","Real-time multi-platform support","Goal-based suggestion customization"], weaknesses:["Advanced features locked behind Premium","Can over-correct stylistic choices","Not a substitute for deep editing","May misinterpret technical jargon","Privacy considerations for sensitive text"], pricingType:"freemium", pricing:"Free basic plan; Premium from ~$12/mo (annual billing)", link:"https://www.grammarly.com" },
+  { name:"Quillbot", category:"writing", categoryDisplay:"Writing & Research", description:"Paraphrasing, summarizing, and citation assistance tool.", strengths:["Multiple paraphrasing modes","Fast summarization for long text","Integrated citation generator","Grammar & plagiarism tools","Chrome & Word integrations"], weaknesses:["Word limits on free plan","Occasional meaning drift in rewrites","Not ideal for original argument development","Repetitive outputs in some modes","Requires manual quality review"], pricingType:"freemium", pricing:"Free limited; Premium ~$19.95/mo (lower on annual)", link:"https://quillbot.com" },
+  { name:"Anki", category:"study", categoryDisplay:"Study & Learning", description:"Spaced repetition flashcard system for durable long-term memory.", strengths:["Evidence-based retention (spaced repetition)","Highly customizable card types","Extensive community shared decks","Sync across devices","Open ecosystem with add-ons"], weaknesses:["Learning curve for new users","Card creation can be time intensive","Interface feels dated","Overloading leads to backlog anxiety","Requires daily consistency"], pricingType:"free", pricing:"Free (desktop & Android); iOS one-time purchase", link:"https://apps.ankiweb.net" },
+  { name:"GitHub Copilot", category:"coding", categoryDisplay:"Coding & Math", description:"AI pair programmer offering real-time code suggestions.", strengths:["Accelerates boilerplate & routine code","Understands context within open files","Multi-language support","Great for learning unfamiliar APIs","Inline explanations possible"], weaknesses:["May generate insecure patterns","Occasional irrelevant suggestions","Risk of over-reliance","License ambiguity for some outputs","Requires internet"], pricingType:"student", pricing:"Free for verified students & OSS maintainers; $10/mo individuals", link:"https://github.com/features/copilot" },
+  { name:"Wolfram Alpha", category:"coding", categoryDisplay:"Coding & Math", description:"Computational engine for math, science, and data queries.", strengths:["Accurate symbolic mathematics","Step-by-step solutions (Pro)","Covers wide STEM domains","Great for verification","Natural language math queries"], weaknesses:["Interface not optimized for exploration","Some steps behind paywall","Limited for conceptual explanation","Requires precise expressions sometimes","No deep pedagogy on free tier"], pricingType:"freemium", pricing:"Free basic; Pro Student from ~$7.25/mo", link:"https://www.wolframalpha.com" },
+  { name:"Notion AI", category:"productivity", categoryDisplay:"Productivity", description:"AI assistant embedded in Notion workspace for writing & organization.", strengths:["Integrated with notes, docs, databases","Summarize or rewrite within context","Generates action items & outlines","Templates accelerate workflows","Good for project knowledge bases"], weaknesses:["AI add-on is an extra cost","Full potential requires system design","Offline support limited","Generic outputs without strong prompts","Pricing scales per seat"], pricingType:"paid", pricing:"Notion free tier; AI add-on ~$8-10/user/mo (annual)", link:"https://www.notion.so" },
+  { name:"Otter.ai", category:"productivity", categoryDisplay:"Productivity", description:"Lecture & meeting transcription with searchable notes.", strengths:["Real-time multi-speaker transcription","Speaker labeling & highlights","Searchable transcript history","Integrations (Zoom, Teams)","Generates summaries & action items"], weaknesses:["Accuracy drops with noise/accents","Free tier monthly minute cap","Privacy considerations for recordings","Formatting cleanup often needed","Limited offline functionality"], pricingType:"freemium", pricing:"Basic free; Pro & Business tiers for more minutes", link:"https://otter.ai" },
+  { name:"DALL-E 2", category:"creative", categoryDisplay:"Creative", description:"AI image generation from natural language prompts.", strengths:["Produces novel illustrative imagery","Style and variation tools","Inpainting & editing support","Great for concept boards","Useful for visual ideation"], weaknesses:["Credits / cost for heavy use","Inconsistent fidelity for complex prompts","Cannot render protected IP","Resolution limits vs pro tools","Ethical debate on dataset sourcing"], pricingType:"paid", pricing:"Credit-based pricing; occasional free trial credits", link:"https://openai.com/dall-e-2" },
+  { name:"Adobe Firefly", category:"creative", categoryDisplay:"Creative", description:"Generative AI for images & design integrated with Adobe ecosystem.", strengths:["Commercially safer training dataset","Deep integration (Photoshop, Express)","Text-to-image & text effects","Layer-aware generative fill","High-quality design outputs"], weaknesses:["Requires Adobe account & plan for depth","Credit limits per month","Learning curve for non-Adobe users","Potential cost for students","Web app less flexible than desktop"], pricingType:"freemium", pricing:"Limited free generative credits; bundled with Creative Cloud plans", link:"https://firefly.adobe.com" },
+  { name:"DeepL Translator", category:"writing", categoryDisplay:"Writing & Research", description:"High accuracy AI translation with context sensitivity.", strengths:["Natural, idiomatic translations","Good for academic register","Preserves formatting (docs)","Glossary for term consistency","Secure EU-based infrastructure"], weaknesses:["Fewer languages than Google","Character limits on free tier","Some domain-specific gaps","Paid plan for API / bulk","No full-site translation like browser"], pricingType:"freemium", pricing:"Free limited; Pro plans tiered by character volume", link:"https://www.deepl.com" },
+  { name:"Mendeley Reference Manager", category:"writing", categoryDisplay:"Writing & Research", description:"Reference management & PDF annotation platform.", strengths:["Automatic metadata extraction","Citation plugin for Word","Collaborative group libraries","PDF highlighting & notes","Cloud sync across devices"], weaknesses:["Limited free storage quota","Owned by large publisher (Elsevier)","Occasional sync conflicts","Interface can feel dated","Less privacy than fully local tools"], pricingType:"free", pricing:"Free with storage limits; extra storage purchasable", link:"https://www.mendeley.com" },
+  { name:"Typeface", category:"productivity", categoryDisplay:"Productivity", description:"Brand-aligned AI content & creative generation platform.", strengths:["Brand tone & style control","Multi-modal (copy, images)","Workflow & template system","Team collaboration features","Enterprise governance"], weaknesses:["Business-focused (overkill for many students)","Higher price point","Requires brand asset setup","Less academic-focused output","Learning curve for brand tuning"], pricingType:"paid", pricing:"Paid SaaS (request pricing / tiered)", link:"https://www.typeface.ai" },
+  { name:"Gamma", category:"productivity", categoryDisplay:"Productivity", description:"AI-generated presentations & docs with modern design.", strengths:["Rapid slide drafting from prompt","Responsive, web-native decks","Minimal design effort needed","Embeds & interactive blocks","Export options (PDF/PowerPoint)"], weaknesses:["Customization depth limited","Free plan export watermark","Requires internet connection","Academic formatting constraints","Complex data visuals limited"], pricingType:"freemium", pricing:"Free plan w/ limits; Pro unlocks branding & exports", link:"https://gamma.app" },
+  { name:"Scholarcy", category:"study", categoryDisplay:"Study & Learning", description:"Summarizes academic papers & extracts structured insights.", strengths:["Key point & abstract distillation","Highlights methods & findings","Reference extraction","Flashcard generation","Supports PDF & URLs"], weaknesses:["May miss subtle arguments","Token/length limits","Over-simplifies nuanced theory","Free usage capped","Not a replacement for full reading"], pricingType:"freemium", pricing:"Free limited; Premium & Library editions", link:"https://www.scholarcy.com" },
+  { name:"Zotero + ZotGPT", category:"writing", categoryDisplay:"Writing & Research", description:"Open-source reference manager augmented with AI summarization plugins.", strengths:["Robust citation styling & export","Browser capture of sources","Local-first privacy orientation","Community plugins & extensibility","AI summarization via optional add-ons"], weaknesses:["AI features need external API keys","Interface less polished","Sync storage limited (free)","Setup complexity for plugins","No built-in OCR for some PDFs"], pricingType:"free", pricing:"Core app free; optional storage & AI API costs separately", link:"https://www.zotero.org" },
+  { name:"Perplexity AI", category:"writing", categoryDisplay:"Writing & Research", description:"Answer engine combining LLM reasoning with live web citations.", strengths:["Cited, source-linked responses","Good for rapid factual checks","Follow-up contextual queries","Multiple model options (Pro)","Minimalist distraction-free UI"], weaknesses:["Daily usage limits (free)","Occasional shallow synthesis","Source quality varies","Long-form depth limited","Some answers still need verification"], pricingType:"freemium", pricing:"Free core; Pro plan with higher limits & models", link:"https://www.perplexity.ai" },
+  { name:"Khan Academy Khanmigo", category:"study", categoryDisplay:"Study & Learning", description:"AI tutor aligned with Khan Academy pedagogy.", strengths:["Guided Socratic teaching style","Curriculum-aligned support","Focus on learning not direct answers","Progress & safety controls","Math & coding assistance"], weaknesses:["Geographic / access limitations","Not full coverage of all subjects","Some latency in complex tutoring","Requires account sign-in","Still evolving feature set"], pricingType:"student", pricing:"Pilots / donation model; some access free for learners", link:"https://www.khanacademy.org/khan-labs" },
+  { name:"Speechify", category:"study", categoryDisplay:"Study & Learning", description:"Text-to-speech platform for listening to articles, docs, and PDFs.", strengths:["Natural-sounding premium voices","Adjustable speed for efficiency","Multi-platform sync","OCR for images & scans","Accessibility benefits"], weaknesses:["Premium tier for best voices","Can mispronounce technical terms","Subscription cost for advanced features","Occasional extraction errors","Not ideal for dense equations"], pricingType:"freemium", pricing:"Free basic; Premium subscription unlocks HD voices", link:"https://speechify.com" },
+  { name:"Google Gemini", category:"writing", categoryDisplay:"Writing & Research", description:"Google's multimodal AI assistant (text, images, some live data).", strengths:["Integration with Google ecosystem","Image & document understanding","Real-time info retrieval","Strong reasoning in newer models","Generous free access initially"], weaknesses:["Features vary by region","Data privacy considerations","Occasional guarded responses","Interface shifts as product evolves","No deep citation guarantee"], pricingType:"freemium", pricing:"Free core; Gemini Advanced via Google One AI Premium", link:"https://gemini.google.com" },
+  { name:"Claude", category:"writing", categoryDisplay:"Writing & Research", description:"Anthropic assistant optimized for safe, thoughtful reasoning.", strengths:["Handles long-context documents well","Good balance of creativity & rigor","Reliable instruction following","Transparent safety posture","Strong summarization ability"], weaknesses:["Daily free usage caps","More conservative on edgy topics","No built-in image generation","Smaller plugin ecosystem","Occasional refusal overshoot"], pricingType:"freemium", pricing:"Free tier; Claude Pro ~$20/mo", link:"https://claude.ai" },
+  { name:"Microsoft Copilot", category:"productivity", categoryDisplay:"Productivity", description:"AI assistant across Microsoft 365 & Windows environment.", strengths:["Deep Office integration (Word/Excel)","Context-aware document help","Can draft emails & summaries","Enterprise compliance features","Bing integration for live data"], weaknesses:["Full features require 365 subscription","Variable quality across apps","Potential over-insertion of suggestions","Privacy review needed for sensitive docs","Complex licensing tiers"], pricingType:"freemium", pricing:"Basic web/chat free; Copilot Pro $20/mo user", link:"https://copilot.microsoft.com" },
+  { name:"Consensus", category:"writing", categoryDisplay:"Writing & Research", description:"Evidence-focused search engine over peer-reviewed literature.", strengths:["Extracts consensus statements","Filters by study design","Links directly to sources","Great start for literature scans","Citation-focused outputs"], weaknesses:["Coverage breadth still growing","Not all disciplines equally rich","Free queries limited","May miss very recent preprints","Requires critical reading of originals"], pricingType:"freemium", pricing:"Free limited; Premium unlocks higher query & export quotas", link:"https://consensus.app" },
+  { name:"Elicit", category:"writing", categoryDisplay:"Writing & Research", description:"AI research assistant for literature review workflows.", strengths:["Structured paper tables (methods, findings)","Hypothesis & question generation","Automates screening tasks","Extracts key variables","Great for early-stage mapping"], weaknesses:["Credits/usage caps","Nuance loss in complex arguments","Requires research literacy","Occasional metadata gaps","Interface dense for beginners"], pricingType:"freemium", pricing:"Free credits; paid tiers expand limits", link:"https://elicit.org" },
+  { name:"ResearchRabbit", category:"writing", categoryDisplay:"Writing & Research", description:"Visual discovery and network mapping of academic literature.", strengths:["Graph view of related papers","Author & topic network exploration","Collaboration & collections","Personalized recommendations","Free academic access"], weaknesses:["Primarily academic focus","Interface can overwhelm early","Not for non-paper sources","Needs manual vetting of relevance","Export options limited"], pricingType:"free", pricing:"Free (academic-focused)", link:"https://researchrabbit.ai" },
+  { name:"Cursor", category:"coding", categoryDisplay:"Coding & Math", description:"AI-first code editor with deep contextual completions.", strengths:["Understands larger code contexts","Chat about entire repo","Rapid prototyping & refactoring","Multiple model choices","Fast, VS Code-like feel"], weaknesses:["Paid plan for higher quotas","Smaller ecosystem vs VS Code","May generate subtle bugs","Reliance risk for juniors","Cloud context processing"], pricingType:"freemium", pricing:"Free base; Pro/Team tiers for expanded context & usage", link:"https://cursor.sh" },
+  { name:"NotebookLM", category:"writing", categoryDisplay:"Writing & Research", description:"Google experimental AI that builds a personalized model from your uploaded sources for Q&A and synthesis.", strengths:["Source-grounded answers with inline citations","Multi-document synthesis & briefs","Automatic question suggestions","Audio overview generation","Good for organizing research notes"], weaknesses:["Geographic availability limited","Must upload quality sources","Not a replacement for critical reading","Occasional citation misalignment","Experimental—features may change"], pricingType:"free", pricing:"Free (experimental pilot; region restricted)", link:"https://notebooklm.google" }
+];
 
-<div class="tool-card">
-    <h3>ChatGPT</h3>
-    <p>Description: A conversational AI that can answer questions and assist in various tasks.</p>
-    <p>Strengths: Natural language understanding, versatile applications.</p>
-    <p>Weaknesses: May generate incorrect or nonsensical answers.</p>
-    <p>Pricing: Free tier available, Pro subscription at $20/month.</p>
-</div>
-
-<div class="tool-card">
-    <h3>Grammarly</h3>
-    <p>Description: An AI-powered writing assistant that helps with grammar and style.</p>
-    <p>Strengths: Real-time feedback, extensive suggestions.</p>
-    <p>Weaknesses: Premium features require subscription.</p>
-    <p>Pricing: Free tier available, Premium at $30/month.</p>
-</div>
-
-<!-- Add additional tool cards for all 26 AI tools here -->
-
+let activeCategory = 'all';
+function setCategoryFilter(cat, btn){ activeCategory = cat; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); applyFilters(); }
+function applyFilters(){ const term = document.getElementById('searchBox').value.trim().toLowerCase(); const filtered = tools.filter(t=> (activeCategory==='all' || t.category===activeCategory) && ( !term || [t.name, t.categoryDisplay, t.description, ...(t.strengths||[]), ...(t.weaknesses||[])].join(' ').toLowerCase().includes(term) ) ); renderTools(filtered); }
+function buildBadges(tool){ const map = { free:'badge-free', freemium:'badge-freemium', paid:'badge-paid', student:'badge-student'}; const labelMap = { free:'FREE', freemium:'FREEMIUM', paid:'PAID', student:'STUDENT / EDU'}; return `<span class="pricing-badge ${map[tool.pricingType]||''}">${labelMap[tool.pricingType]||'PRICING'}</span>`; }
+function renderTools(list){ const grid = document.getElementById('toolsGrid'); grid.innerHTML=''; if(!list.length){ grid.innerHTML = `<div class='empty-state'>No tools matched your filters. Try a different keyword or category.</div>`; return; } list.forEach(tool=>{ const card=document.createElement('div'); card.className='tool-card'; card.innerHTML = `
+  <div class="tool-header">
+    <div>
+      <h3 class="tool-name">${tool.name}</h3>
+      <div class="pricing-badges">${buildBadges(tool)}</div>
+    </div>
+    <span class="tool-category">${tool.categoryDisplay}</span>
+  </div>
+  <p class="tool-description">${tool.description}</p>
+  <div class="tool-section strengths"><h4 class="section-title">Strengths</h4><ul>${tool.strengths.map(s=>`<li>${s}</li>`).join('')}</ul></div>
+  <div class="tool-section weaknesses"><h4 class="section-title">Weaknesses</h4><ul>${tool.weaknesses.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+  <div class="tool-section pricing"><h4 class="section-title">Pricing & Access</h4><p style="font-size:.78rem; color:#7c2d12; line-height:1.3;">${tool.pricing}</p></div>
+  <a class="tool-link" href="${tool.link}" target="_blank" rel="noopener noreferrer">Visit Website →</a>`; grid.appendChild(card); }); }
+// Initial render
+renderTools(tools);
+</script>
 </body>
 </html>
